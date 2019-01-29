@@ -107,10 +107,10 @@ var person3 = Person(name: "The Big L")
 var person4 = Person(name: "Freshtastic")
 var person5 = Person(name: "M")
 
-struct Queue {
-  var lineup = [Person]()
-  mutating func getInLine(person: Person) {
-    lineup.append(person)
+struct Queue<Thing>  {
+  var lineup = [Thing]()
+  mutating func getInLine(thing: Thing) {
+    lineup.append(thing)
     print("\(lineup)")
   }
   mutating func leaveLine(){
@@ -123,13 +123,13 @@ struct Queue {
   }
 }
 
-var theLineUp = Queue()
-theLineUp.getInLine(person: person1)
-theLineUp.getInLine(person: person2)
-theLineUp.getInLine(person: person3)
+var theLineUp = Queue<Person>()
+theLineUp.getInLine(thing: person1)
+theLineUp.getInLine(thing: person2)
+theLineUp.getInLine(thing: person3)
 theLineUp.leaveLine()
-theLineUp.getInLine(person: person4)
-theLineUp.getInLine(person: person5)
+theLineUp.getInLine(thing: person4)
+theLineUp.getInLine(thing: person5)
 theLineUp.leaveLine()
 theLineUp.leaveLine()
 theLineUp.leaveLine()

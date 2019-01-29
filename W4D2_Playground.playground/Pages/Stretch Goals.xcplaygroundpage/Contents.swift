@@ -4,7 +4,7 @@ import Foundation
  - Callout(Stretch Goal):
 Earlier we learned about switch statements and tuples. So far we've evaluated the tuple based on a very simple comparison; we just compare if the values match. We can create more complicated matching patterns for our cases.
 */
-let pet = (name: "Tim", animal: "Dog", age: 2)
+let pet = (name: "Billy", animal: "Dog", age: 4)
 
 switch pet {
 case (let name, let animal, let age) where (age < 1 || name.count < 1 || animal.count < 1):
@@ -26,22 +26,27 @@ case (let name, let animal, let age):
 
 // case (let name, let animal, let age) where (age < 1 || name.count < 1 || animal.count < 1):
 // Explain what this does.
+//this checks if the age is < 1 or if the name or animal type are a string with < 1 characters
 
 // case ("Billy", "Dog", let age):
 // Explain what this does.
+//checking for the specific case where the name is "Billy" and the animal is "Dog" and the age could be anything that passes the first case
 
 // case ("Tim", "Dog", let age) where age == 2:
 // Explain what this does.
+//name has to be Tim, animal has to be Dog, age has to be exactly 2
 
 // case (let name, let animal, ..<3):
 // Explain what this does.
+//name and animal fields do not matter but the age must be less than 3
 
 // case (let name, let animal, 7...):
 // Explain what this does.
+//name and animal fields do not matter but the age must be greater than 7
 
 // case (let name, let animal, let age):
 // Explain what this does.
-
+//if we made it through all the other checks, we end up here, is basically a default case
 
 /*:
  - Callout(Stretch Goal):
@@ -57,6 +62,8 @@ extension Array where Element: Numeric {
         print("This function only appears for number types")
     }
 }
+let myArray = [5,33,5]
+myArray.functionOnlyForNumbers()
 
 let numberArray = [Int]()
 numberArray.functionOnlyForNumbers()
@@ -66,8 +73,41 @@ let stringArray = [String]()
 
 //: Now it's your turn. Create an extension on the 'Queue' data structure you created earlier.
 //: For elements that conforms to the 'Numeric' protocol, create a function that adds all numbers together in the queue and print out its total.
+struct Queue<Thing>  {
+  var lineup = [Thing]()
+  mutating func getInLine(thing: Thing) {
+    lineup.append(thing)
+    print("\(lineup)")
+  }
+  mutating func leaveLine(){
+    if lineup.count > 0{
+      lineup.remove(at: 0)
+      print("\(lineup)")
+    }else{
+      print("no one in line")
+    }
+  }
+}
 
+extension Queue where Thing :Numeric{
+  func addAllNumbers() -> Thing{
+    var total:Thing = 0
+    for num  in lineup{
+      
+      total += num
+      
+    }
+    return total
+  }
+}
+var queue = Queue<Int>()
+queue.getInLine(thing: 5)
+queue.getInLine(thing: 4)
+queue.getInLine(thing: 33)
+queue.getInLine(thing: 22)
+queue.getInLine(thing: 1)
 
+queue.addAllNumbers()
 
 /*:
  - Callout(Stretch Goal):
@@ -99,6 +139,17 @@ let dictionary: Dictionary? = ["Sentence 1" : "Let me help you with your baggage
                                "Sentence 2" : "I'd rather have a burger",
                                "Sentence 3" : "I think I will buy the red car"]
 
+if let sentence :String = dictionary?["Sentence 1"] {
+  print(sentence.count)
+}else{
+  print("sentence or dictionary is null")
+}
+
+if let sentence :String = dictionary?["Sentence 5"] {
+  print("there are \(sentence.count) charcters in that sentence")
+}else{
+  print("sentence or dictionary is null")
+}
 
 
 //: [Next](@next)
