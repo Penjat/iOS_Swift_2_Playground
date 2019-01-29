@@ -8,24 +8,30 @@
  Declare a optional Double value and set it to nil.
  */
 
+var beesCount :Double? = nil
 
 /*:
  - Experiment:
  Assign a value your optional Double.
  */
-
+beesCount = 55.5
 
 /*:
  - Experiment:
  Force unwrap the optional value. Why do you have to be careful about force unwrapping?
  */
-
+var numberBugs = beesCount!
+//if it is nil, there will be a runtime error
 
 /*:
  - Experiment:
  Use conditional unwrapping to verify if the optional has a value. Print the value if there is something, otherwise, print out to indicate there is no value present. Why is conditional unwrapping better than force unwrapping?
  */
-
+if let bees = beesCount {
+  print("the number of bees is \(bees)")
+}else{
+  print("not a valid input")
+}
 
 /*:
  - Callout(Challenge):
@@ -33,6 +39,19 @@
  */
 var testData: [String?] = ["Heather", nil, "Mike", "John", nil, nil, "Bob"]
 
+func removeNil(array: [String?]) -> [String]{
+  var output = [String]()
+  for i in 0..<array.count{
+    if let element = array[i]{
+      output.append(element)
+    }
+  }
+  return output
+}
+let newData = removeNil(array: testData)
+print(newData)
+
+//pass it to a new array to make it not optional
 
 /*:
  - Callout(Challenge):
@@ -55,7 +74,24 @@ let email: String? = "user1@lighthouselabs.ca"
 //let password: String? = nil
 //let email: String? = "user1@lighthouselabs.ca"
 
-
+func validateUserData(username:String? , password:String? , email:String?){
+  
+  guard let username = username , username != "" else {
+    print("not a valid user name")
+    return
+  }
+  guard let password = password , password != "" else {
+    print("not a valid password")
+    return
+  }
+  guard let email = email , email != "" else {
+    print("not a valid email")
+    return
+  }
+  print("hello \(username), your password is:\(password) and your email is:\(email) ")
+  
+}
+validateUserData(username: username, password: password, email: email)
 
 /*:
  ## Guard Let
@@ -91,6 +127,17 @@ isMyNumberANegativeValue(myNumber: myNumber)
  - Experiment:
  Create a function that takes in two number parameters and divide them. We don't like dividing by zero, so ensure this doesn't happen. Otherwise, return the calculated value.
  */
+func divideNumbers(firstNumber:Double? , secondNumber:Double?) -> Double{
+  guard let firstNumber = firstNumber , firstNumber != 0 else{
+    print("cannot divide by nil or zero")
+    return 0.0
+  }
+  guard let secondNumber = secondNumber , secondNumber != 0 else{
+    print("cannot divide by nil or zero")
+    return 0.0
+  }
+  return firstNumber/secondNumber
+}
 
 
 /*:
@@ -124,11 +171,30 @@ isMyNumberAnOptional(myOptionalNumber: myOptionalNumber)
  Create a function that takes in an array of numbers. Have the function add all the numbers together and return the result. Make sure to `guard` against an empty array. Use `array.first` to check if there is at least one value in the array.
  */
 
+func addArrayValues(array: [Double]) -> Double{
+  guard let _ = array.first else{
+    print("array has no elements")
+    return 0
+  }
+  var total = 0.0
+  for num in array{
+    total += num
+  }
+  return total
+}
+
+let sconeWeight = [33.2,55.0,29.1,3.0,601.9]
+addArrayValues(array: sconeWeight)
+
+let muffinVolume = [Double]()
+addArrayValues(array: muffinVolume)
+
+
 
 /*:
  - Callout(Challenge):
  Now that we've learnt this new guard statement, let's rewrite the form validation challenge using the guard statements. How does it improve our current implementation?
  */
-
+//I initally wrote it with guard statments
 
 //: [Next](@next)
