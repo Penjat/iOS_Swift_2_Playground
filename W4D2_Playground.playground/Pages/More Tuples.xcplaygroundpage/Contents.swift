@@ -9,7 +9,7 @@ import Foundation
 /*:
  Imagine we are rolling two six-sided dice. We can use a tuple to represent each of the dice values.
  */
-let diceRoll = (5, 6)
+let diceRoll = (3,3)
 
 // Our switch statement looks for the cases where the total value of the dice rolled is 11
 switch diceRoll {
@@ -30,6 +30,21 @@ default:
  - case (let x, let y) where x == y
  */
 
+switch diceRoll {
+case (_, 1):
+  print("the second die was a 1")
+case (2, _):
+  print("the first die was a 2")
+case (1...3, 1...3):
+  print("both die were between 1 and 3")
+case (let x, let y) where x == y:
+  print("x and y are equal!")
+default:
+  print("This roll doesn't matter to us")
+}
+
+
+
 
 /*:
  - Callout(Challenge):
@@ -40,6 +55,20 @@ default:
  - Halloween Day - Oct 31
  - Otherwise, indiciate the given day is not a holiday
  */
+let aDate = (25,"Dec")
+switch (aDate){
+  
+case (25,"Dec"):
+  print("why, its Christmas Day sir")
+case (14,"Feb"):
+  print("it is Valentines Day")
+case (1,"Jan"):
+  print("New Years Day")
+case (31,"Oct"):
+  print("it is Halloween")
+default:
+  print("mother died today, or was it yesterday...")
+}
 
 
 /*:
@@ -54,6 +83,20 @@ default:
  - point is inside the blue outlined box
  - point is outside the blue outlined box
  */
+let point = (2,3)
+
+switch (point){
+case (_,0):
+  print("x is on x axis, y is on y axis")
+case (0,_) :
+  print("x is on x axis")
+case (_,0):
+  print("y is on y axis")
+case (-2...2,-2...2):
+  print ("inside the blue box")
+default:
+  print ("outside the blue box")
+}
 
 
 //: [Next](@next)
