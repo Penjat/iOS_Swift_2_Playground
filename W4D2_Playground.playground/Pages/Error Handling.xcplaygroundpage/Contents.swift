@@ -53,6 +53,21 @@ catch let error {
  - Experiment:
  Create a Human class that has a name and age property. Also, create an initializer for this class to set its initial properties.
  */
+enum InputError: Error {
+  case InvalidInput,InvalidUsername,InvalidPassword
+  
+}
+class Human{
+  let name :String
+  let age :Int
+  init(name :String,age :Int) throws {
+    if(name == "" || age < 0){
+      throw InputError.InvalidInput
+    }
+    self.name = name
+    self.age = age
+  }
+}
 
 
 /*:
@@ -65,6 +80,23 @@ catch let error {
  - Experiment:
  Now you can test your new Human class and surround it around the do-catch blocks.
  */
+do {
+  let joe = try Human(name: "Joe", age: 53)
+}catch{
+  print("there was a problem with your input")
+}
+
+do {
+  let frank = try Human(name: "", age: 53)
+}catch{
+  print("there was a problem with your input")
+}
+
+do {
+  let frank = try Human(name: "Deserbal", age: -100000)
+}catch{
+  print("there was a problem with your input")
+}
 
 
 /*:
@@ -72,6 +104,12 @@ catch let error {
  Test your Human class again but don't surround it with a do-catch block and use `try?` instead. What do you notice? (What is the value of the new human when an error is thrown?)
  */
 
+let bo = try Human(name: "Bo",age: 902)
+print("\(bo.name)")
+
+//let frank = try Human(name: "",age: 90)
+//print("\(frank.name)")
+//Playground execution terminated: An error was thrown and was not caught:
 
 /*:
  - Experiment:
@@ -82,6 +120,9 @@ catch let error {
 let data = "{\"firstName\": \"Bob\", \"lastName\": \"Doe\", \"vehicles\": [\"car\", \"motorcycle\", \"train\"]}".data(using: .utf8)!
 
 
+let json = try? JSONSerialization.jsonObject(with: data, options: [])
+print("\(String(describing: json))")
+
 /*:
  - Callout(Challenge):
  Going back to our challenge from "More Optionals", let's rewrite the form valiation but we will use throw errors to indicate which piece is missing. We want to write a function that validates form data filled in by a user. Once we encounter the first field that is blank, we want to throw an error indicating which field is empty. Otherwise, print out all the information.
@@ -91,16 +132,42 @@ let username: String? = "user1"
 let password: String? = "password123"
 let email: String? = "user1@lighthouselabs.ca"
 
+//
+func checkUserInput(username: String? , password: String? ,email: String?) throws{
+  if let username = username , username != ""{
+
+  }else{
+    throw InputError.InvalidUsername
+  }
+  if let password = password , password != ""{
+
+  }else{
+    throw InputError.InvalidPassword
+  }
+
+}
 // Should stop at password check and throw an error regarding empty password
 //let username: String? = "user1"
 //let password: String? = nil
 //let email: String? = "user1@lighthouselabs.ca"
 
+do {
+  try checkUserInput(username: username, password: password, email: email)
+  print("everthing checks out")
+}catch{
+    print("there was a problem with your input")
+  }
+
 // Should stop at username check and throw an error regarding empty user name
 //let username: String? = nil
 //let password: String? = nil
 //let email: String? = "user1@lighthouselabs.ca"
-
+//do {
+//  try checkUserInput(username: username, password: password, email: email)
+//  print("everthing checks out")
+//}catch{
+//  print("there was a problem with your input")
+//}
 
 /*:
  - Callout(Challenge):
@@ -110,6 +177,9 @@ let email: String? = "user1@lighthouselabs.ca"
  
  Throw an error if the model doesn't exist, insufficient amount of money was given, or the car is out of stock.
  */
+enum SellingError :Error{
+  case CarNotAvailable,NotEnoughMoney
+}
 class HondaDealership{
   
   var availableCarSupply = ["Civic" : (price: 5000, count: 5),
@@ -117,7 +187,36 @@ class HondaDealership{
                             "Prelude" : (price: 9000, count: 2)]
   
   
-  
+  func sellCar(model: String, offeredPrice: Int) throws{
+    if let car = availableCarSupply[model]{
+      if car.price > offeredPrice{
+        throw SellingError.NotEnoughMoney
+      }
+    }else{
+      throw SellingError.CarNotAvailable
+    }
+    print("car sold sucsessfully")
+    
+  }
 }
+let hondaDealership = HondaDealership()
+
+do{
+  
+try hondaDealership.sellCar(model: "Cat caravan", offeredPrice: 800000)
+  
+}catch{
+  print("could not complete sale")
+}
+do{
+  
+  try hondaDealership.sellCar(model: "CRV", offeredPrice: 900000)
+  
+}catch{
+  print("could not complete sale")
+}
+
+
+
 
 //: [Next](@next)
